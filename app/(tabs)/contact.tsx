@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,Dimensions, Linking, ScrollView, TextInput, Alert, Button } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+  ScrollView,
+  TextInput,
+  Alert,
+  Button,
+  useWindowDimensions,
+} from 'react-native';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
-
-const height = Dimensions.get('window')
 
 const ContactScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [comment, setComment] = useState('');
+  const { width } = useWindowDimensions();
 
-  const handlePhoneCall = () => {
-    Linking.openURL('tel:+919994269695');
-  };
-
-  const handleEmail = () => {
-    Linking.openURL('mailto:info@slnt2webdesign.com');
-  };
-
-  const handleWebsite = () => {
-    Linking.openURL('https://slnt2webdesign.com/');
-  };
-
+  const handlePhoneCall = () => Linking.openURL('tel:+919994269695');
+  const handleEmail = () => Linking.openURL('mailto:info@slnt2webdesign.com');
+  const handleWebsite = () => Linking.openURL('https://slnt2webdesign.com/');
   const handleMap = () => {
     const address = encodeURIComponent(
       '152, Second Agraharam, Near Lakshmi Villas Bank, Salem - 636001, Tamil Nadu, India'
@@ -36,7 +37,6 @@ const ContactScreen = () => {
       return;
     }
 
-    // Here you could send data to an API or email service
     Alert.alert('Thank you!', 'Your message has been submitted.');
     setName('');
     setEmail('');
@@ -45,9 +45,8 @@ const ContactScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 40 }}>
       <Text style={styles.heading}>Contact Us</Text>
-
       <Text style={styles.subheading}>Sri Lakshmi Narasimhan Technology</Text>
 
       <View style={styles.infoSection}>
@@ -85,48 +84,31 @@ const ContactScreen = () => {
       <View style={styles.form}>
         <Text style={styles.formTitle}>Quick Contact</Text>
 
-        <Text style={styles.label}>
-          Name <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your name"
-          value={name}
-          onChangeText={setName}
-        />
-
-        <Text style={styles.label}>
-          Email Address <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your email"
-          keyboardType="email-address"
-          autoCapitalize="none"
+        <CustomInput label="Name" required value={name} onChangeText={setName} placeholder="Enter your name" />
+        <CustomInput
+          label="Email Address"
+          required
           value={email}
           onChangeText={setEmail}
+          placeholder="Enter your email"
+          keyboardType="email-address"
         />
-
-        <Text style={styles.label}>
-          Mobile <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter your mobile number"
-          keyboardType="phone-pad"
+        <CustomInput
+          label="Mobile"
+          required
           value={mobile}
           onChangeText={setMobile}
+          placeholder="Enter your mobile number"
+          keyboardType="phone-pad"
         />
-
-        <Text style={styles.label}>
-          Comment <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          style={[styles.input, { height: 100 }]}
-          placeholder="Your message"
-          multiline
+        <CustomInput
+          label="Comment"
+          required
           value={comment}
           onChangeText={setComment}
+          placeholder="Your message"
+          multiline
+          inputStyle={{ height: 100, textAlignVertical: 'top' }}
         />
 
         <View style={{ marginTop: 20 }}>
@@ -137,13 +119,38 @@ const ContactScreen = () => {
   );
 };
 
+// Reusable input component
+const CustomInput = ({
+  label,
+  required,
+  value,
+  onChangeText,
+  placeholder,
+  keyboardType = 'default',
+  multiline = false,
+  inputStyle = {},
+}) => (
+  <>
+    <Text style={styles.label}>
+      {label} {required && <Text style={styles.required}>*</Text>}
+    </Text>
+    <TextInput
+      style={[styles.input, inputStyle]}
+      placeholder={placeholder}
+      value={value}
+      onChangeText={onChangeText}
+      keyboardType={keyboardType}
+      multiline={multiline}
+    />
+  </>
+);
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     paddingHorizontal: 20,
     backgroundColor: '#fff',
     flex: 1,
-    
   },
   heading: {
     fontSize: 26,
@@ -165,6 +172,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
     color: '#333',
+    flex: 1,
+    flexWrap: 'wrap',
   },
   form: {
     marginTop: 30,
@@ -188,7 +197,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 6,
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingVertical: 10,
     fontSize: 16,
     backgroundColor: '#f9f9f9',
   },
