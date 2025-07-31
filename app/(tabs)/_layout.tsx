@@ -36,15 +36,6 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="portfolio"
-        options={{
-          title: "Portfolio",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="images-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="contact"
         options={{
           title: "Contact",

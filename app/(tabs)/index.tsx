@@ -7,7 +7,6 @@ import {
   ScrollView,
 } from "react-native";
 
-// Get screen dimensions
 const { height } = Dimensions.get("window");
 
 const slntServicesImages = [
