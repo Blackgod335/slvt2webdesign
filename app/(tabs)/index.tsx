@@ -54,7 +54,7 @@ export default function Index() {
 
       <ScrollView
         horizontal
-        showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={true}
         contentContainerStyle={styles.clientsContainer}
       >
         {slntServicesImages.map(({ title, uri }, index) => (
@@ -77,7 +77,7 @@ export default function Index() {
 
       <ScrollView
         horizontal
-        showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={true}
         contentContainerStyle={styles.clientsContainer}
       >
         {[
